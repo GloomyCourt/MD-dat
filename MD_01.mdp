@@ -1,1 +1,82 @@
+;-----------------------------------------------
+; Title
+;-----------------------------------------------
+title                   = My MD
 
+;-----------------------------------------------
+; Run parameters
+;-----------------------------------------------
+integrator              = md               ; leap-frog integrator
+nsteps                  = 5000000          ; number of steps: 0.002 * 5000000 = 100000 ps (10 ns)
+dt                      = 0.002            ; time step in ps (2 fs)
+
+;-----------------------------------------------
+; Output control
+;-----------------------------------------------
+nstxout                 = 0                ; do not output full trajectory (.trr)
+nstvout                 = 0                ; do not output velocities
+nstfout                 = 0                ; do not output forces
+nstenergy               = 5000             ; write energies every 5000 steps (~10 ps)
+nstlog                  = 5000             ; update log file every 5000 steps (~10 ps)
+nstxout-compressed      = 5000             ; write compressed coordinates every 5000 steps (~10 ps)
+compressed-x-grps       = System           ; compress the whole system
+
+;-----------------------------------------------
+; Energy groups for interaction energy analysis
+;-----------------------------------------------
+; Define custom energy groups so that you can later extract interaction energies.
+; For example, to monitor interactions between a specific residue range and the rest of the protein,
+; you will later define "Group_1" (via an index file) and "Rest" will be all atoms not in Group_1.
+energygrps              = Group_1 Rest
+
+;-----------------------------------------------
+; Bond parameters
+;-----------------------------------------------
+continuation            = yes              ; restart simulation (e.g., after NPT)
+constraint_algorithm    = lincs            ; holonomic constraints
+constraints             = h-bonds          ; constrain bonds involving hydrogen
+lincs_iter              = 1                ; number of iterations for LINCS
+lincs_order             = 4                ; order of the LINCS algorithm
+
+;-----------------------------------------------
+; Neighbor searching
+;-----------------------------------------------
+cutoff-scheme           = Verlet           ; use Verlet cutoff scheme
+ns_type                 = grid             ; grid-based neighbor searching
+nstlist                 = 10               ; update neighbor list every 10 steps
+rcoulomb                = 1.0              ; short-range electrostatic cutoff in nm
+rvdw                    = 1.0              ; short-range van der Waals cutoff in nm
+
+;-----------------------------------------------
+; Electrostatics
+;-----------------------------------------------
+coulombtype             = PME              ; Particle Mesh Ewald for long-range electrostatics
+pme_order               = 4                ; cubic interpolation for PME
+fourierspacing          = 0.16             ; grid spacing for FFT in nm
+
+;-----------------------------------------------
+; Temperature coupling
+;-----------------------------------------------
+tcoupl                  = V-rescale        ; modified Berendsen thermostat
+tc-grps                 = Protein Non-Protein   ; separate groups for better control (adjust as needed)
+tau_t                   = 0.1     0.1      ; time constants for temperature coupling in ps
+ref_t                   = 300     300      ; reference temperatures in K for each group
+
+;-----------------------------------------------
+; Pressure coupling
+;-----------------------------------------------
+pcoupl                  = Parrinello-Rahman   ; pressure coupling method
+pcoupltype              = isotropic           ; isotropic pressure coupling
+tau_p                   = 2.0                 ; pressure coupling time constant in ps
+ref_p                   = 1.0                 ; reference pressure in bar
+compressibility         = 4.5e-5              ; compressibility in bar^-1
+
+;-----------------------------------------------
+; Periodic boundary conditions
+;-----------------------------------------------
+pbc                     = xyz             ; apply periodic boundary conditions in all dimensions
+
+;-----------------------------------------------
+; Dispersion corrections
+;-----------------------------------------------
+DispCorr                = EnerPres        ; apply energy and pressure dispersion corrections
