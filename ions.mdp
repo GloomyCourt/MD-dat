@@ -1,0 +1,17 @@
+; ions.mdp — create ions.tpr for gmx genion (no dynamics are run)
+integrator               = steep
+emtol                    = 1000
+emstep                   = 0.01
+nsteps                   = 50000
+
+; Nonbonded setup (match the rest of your pipeline)
+cutoff-scheme            = Verlet
+coulombtype              = PME
+rcoulomb                 = 1.0
+rvdw                     = 1.0
+pme-order                = 4
+fourierspacing           = 0.16
+DispCorr                 = EnerPres
+
+pbc                      = xyz
+constraints              = none
