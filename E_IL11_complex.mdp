@@ -27,7 +27,7 @@ compressed-x-grps       = System           ; compress the whole system
 ; Define custom energy groups so that you can later extract interaction energies.
 ; For example, to monitor interactions between a specific residue range and the rest of the protein,
 ; you will later define "Group_1" (via an index file) and "Rest" will be all atoms not in Group_1.
-energygrps              =  r_17-190 r_1112-1317 r_2125-2325 r_2027-2124
+energygrps              =  r_17-184 r_1112-1317 r_2125-2325 r_2027-2124
 
 ;-----------------------------------------------
 ; Bond parameters
